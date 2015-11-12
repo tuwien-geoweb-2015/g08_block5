@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Simple example</title>
+<link rel="stylesheet" href="http://openlayers.org/en/v3.11.0/css/ol.css" type="text/css">
+<script src="http://openlayers.org/en/v3.11.0/build/ol.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+
+<div class="row-fluid">
+  <div class="span12">
+    <div id="map" class="map"></div>
+  </div>
+</div>
+
+</div>
+<script>
+var map = new ol.Map({
+  layers: [
+    new ol.layer.Tile({
+      source: new ol.source.OSM()
+    })
+  ],
+  controls: ol.control.defaults({
+    attributionOptions: /** @type {olx.control.AttributionOptions} */ ({
+      collapsible: false
+    })
+  }),
+  target: 'map',
+  view: new ol.View({
+    center: [0, 0],
+    zoom: 2
+  })
+});
+
+</script>
+</body>
+</html>
