@@ -1,26 +1,17 @@
-// dokumentation funktion: fit() ol.geolocation() getAccuracyGeometry() getExtent() "boundingbox" (-> Nominatim) ol.proj.transformExtent () getProjection()
-
 <!DOCTYPE html>
 <html>
 <head>
-<title>Simple example</title>
+<title>Kartensuche</title>
 <link rel="stylesheet" href="http://openlayers.org/en/v3.11.0/css/ol.css" type="text/css">
 <script src="http://openlayers.org/en/v3.11.0/build/ol.js"></script>
+
 </head>
 <body>
-  <form id="searchform">
-      <input name="Search" width="150" type="text" placeholder="Search, e.g. 'Vienna', 'Karlsplatz 13, Wien'">
-      <input type="submit" value="Search">
-    </form>
-<div class="container-fluid">
-
-<div class="row-fluid">
-  <div class="span12">
-    <div id="map" class="map"></div>
-  </div>
-</div>
-
-</div>
+<form id="searchform">
+  <input name="search" size="80" type="text" placeholder="Search, e.g. 'Vienna', 'Karlsplatz 13, Wien'">
+  <input type="submit" value="Search">
+</form>
+<div id="map" class="map"></div>
 <script>
 var map = new ol.Map({
   layers: [
@@ -35,7 +26,7 @@ var map = new ol.Map({
   }),
   target: 'map',
   view: new ol.View({
-    center: [16.23, 48.12],
+    center: [0, 0],
     zoom: 13
   })
 });
@@ -46,20 +37,19 @@ var geolocation = new ol.Geolocation({
 geolocation.once('change:position', function(evt) {
   map.getView().setCenter(geolocation.getPosition());
 });
-
 var form = document.getElementById('searchform');
-form.onsubmit = function (evt) {
+form.onsubmit = function(evt) {
   evt.preventDefault();
   var q = form.search.value;
   var url = 'http://nominatim.openstreetmap.org/search?format=json&q=' + q;
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url);
-  xhr.onload = function(){
+  xhr.onload = function() {
     var result = JSON.parse(xhr.responseText);
-    if (result.length > 0){
+    if (result.length > 0) {
       var first = result[0];
-      form.search.value = first-display_name
-      map.getView().set.center(ol.proj.fromLonLat([
+      form.search.value = first.display_name;
+      map.getView().setCenter(ol.proj.fromLonLat([
         parseFloat(first.lon),
         parseFloat(first.lat)
       ]));
@@ -67,8 +57,6 @@ form.onsubmit = function (evt) {
   };
   xhr.send();
 };
-
-
 </script>
 </body>
 </html>
